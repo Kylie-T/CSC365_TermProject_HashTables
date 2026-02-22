@@ -27,14 +27,31 @@ class table:
         self._check_resize()
     
     #Linear Probing
+    # _ used to indicate private method*
     def _linear_probing(self, slot, item):
         pass
         
     #Quadratic Probing
+    # _ used to indicate private method*
     def _quadratic_probing(self, slot, item):
-        pass
+
+        org_slot = slot
+        i = 0
+        #checks if the index has a value assigned, if so, quadratic probing occurs
+        while (self._table[slot][0] != ' '):
+            slot = (org_slot + i**2) % self._length
+            i+=1
+
+            #resizes the table once all indices are checked
+            if (i > self._length):
+                self._resize()
+                break
+        
+        #loop provides viable index to set value
+        self._table[slot][0] = item
 
     #Separate Chaining
+    # _ used to indicate private method*
     def _separate_chaining(self, slot, item):
         #fill first spot if empty or add a new item to the list
         if (self._table[slot][0] == ' '):
@@ -101,20 +118,28 @@ if __name__ == "__main__":
 
     #LINEAR PROBING
     #insert some values into the table
-    print("Linear Probing")
-    MyTable = table(collision_method='linear_probing')
-    MyTable.insert(12)
-    print(str(MyTable) + "\n")
-    MyTable.insert(22)
-    print(str(MyTable) + "\n")
-    MyTable.insert(15)
-    print(str(MyTable) + "\n")
-    MyTable.insert(25)
-    print(MyTable)
+    # print("Linear Probing")
+    # MyTable = table(collision_method='linear_probing')
+    # MyTable.insert(12)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(22)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(15)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(25)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(16)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(18)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(23)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(33)
+    # print(MyTable)
 
     #QUADRATIC PROBING
     #insert some values into the table
-    print("Quadratic Probing")
+    print("\nQuadratic Probing")
     MyTable = table(collision_method='quadratic_probing')
     MyTable.insert(12)
     print(str(MyTable) + "\n")
@@ -123,19 +148,35 @@ if __name__ == "__main__":
     MyTable.insert(15)
     print(str(MyTable) + "\n")
     MyTable.insert(25)
+    print(str(MyTable) + "\n")
+    MyTable.insert(16)
+    print(str(MyTable) + "\n")
+    MyTable.insert(18)
+    print(str(MyTable) + "\n")
+    MyTable.insert(23)
+    print(str(MyTable) + "\n")
+    MyTable.insert(33)
     print(MyTable)
 
     #SEPARATE CHAINING 
     #insert some values into the table
-    print("Separate Chaining")
-    MyTable = table(collision_method='separate_chaining')
-    MyTable.insert(12)
-    print(str(MyTable) + "\n")
-    MyTable.insert(22)
-    print(str(MyTable) + "\n")
-    MyTable.insert(15)
-    print(str(MyTable) + "\n")
-    MyTable.insert(25)
-    print(MyTable)
+    # print("\nSeparate Chaining")
+    # MyTable = table(collision_method='separate_chaining')
+    # MyTable.insert(12)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(22)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(15)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(25)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(16)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(18)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(23)
+    # print(str(MyTable) + "\n")
+    # MyTable.insert(33)
+    # print(MyTable)
 
 
