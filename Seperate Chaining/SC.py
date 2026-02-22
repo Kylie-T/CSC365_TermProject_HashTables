@@ -1,7 +1,8 @@
 #class for hash table using seperate chaining for collisions
 class table:
-    def __init__(self, initial_length = 5):
+    def __init__(self, initial_length = 5, collision_method='linear_probing'):
         self._table = []
+        self._collision_method = collision_method
         
         #fill table with initial_length amount of empty spaces (space used to represent None)
         for i in range(initial_length):
@@ -14,16 +15,33 @@ class table:
         #get index by using mod
         slot = item % self._length
         
+        #checks for collision handling type requested
+        if self._collision_method == 'linear_probing':
+            self._linear_probing(slot, item)
+        if self._collision_method == 'quadratic_probing':
+            self._quadratic_probing(slot, item)
+        if self._collision_method == 'separate_chaining':
+            self._separate_chaining(slot, item)
+
+        #extra: resize table if 75% full on both axes
+        self._check_resize()
+    
+    #Linear Probing
+    def _linear_probing(self, slot, item):
+        pass
+        
+    #Quadratic Probing
+    def _quadratic_probing(self, slot, item):
+        pass
+
+    #Separate Chaining
+    def _separate_chaining(self, slot, item):
         #fill first spot if empty or add a new item to the list
         if (self._table[slot][0] == ' '):
             self._table[slot][0] = item
         else:
             self._table[slot].append(item)
 
-        #extra: resize table if 75% full on both axes
-        self._check_resize()
-        
-        
 
     #check if a resize is needed based on a threshold (75% by default)
     # _ used to indicate private method*
@@ -80,7 +98,11 @@ if __name__ == "__main__":
     #create a new hash table
     MyTable = table()
 
+
+    #LINEAR PROBING
     #insert some values into the table
+    print("Linear Probing")
+    MyTable = table(collision_method='linear_probing')
     MyTable.insert(12)
     print(str(MyTable) + "\n")
     MyTable.insert(22)
@@ -90,8 +112,30 @@ if __name__ == "__main__":
     MyTable.insert(25)
     print(MyTable)
 
+    #QUADRATIC PROBING
+    #insert some values into the table
+    print("Quadratic Probing")
+    MyTable = table(collision_method='quadratic_probing')
+    MyTable.insert(12)
+    print(str(MyTable) + "\n")
+    MyTable.insert(22)
+    print(str(MyTable) + "\n")
+    MyTable.insert(15)
+    print(str(MyTable) + "\n")
+    MyTable.insert(25)
+    print(MyTable)
 
-
-
+    #SEPARATE CHAINING 
+    #insert some values into the table
+    print("Separate Chaining")
+    MyTable = table(collision_method='separate_chaining')
+    MyTable.insert(12)
+    print(str(MyTable) + "\n")
+    MyTable.insert(22)
+    print(str(MyTable) + "\n")
+    MyTable.insert(15)
+    print(str(MyTable) + "\n")
+    MyTable.insert(25)
+    print(MyTable)
 
 
