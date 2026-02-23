@@ -1,7 +1,8 @@
 #class for hash table using seperate chaining for collisions
 class table:
-    def __init__(self, initial_length = 5, collision_method='linear_probing'):
+    def __init__(self, initial_length = 5, collision_method='linear_probing', auto_resize=True):
         self._table = []
+        self._do_resize = auto_resize
         self._collision_method = collision_method
         
         #fill table with initial_length amount of empty spaces (space used to represent None)
@@ -12,19 +13,40 @@ class table:
         self._length = initial_length
 
     def insert(self, item):
-        #get index by using mod
-        slot = item % self._length
-        
-        #checks for collision handling type requested
-        if self._collision_method == 'linear_probing':
-            self._linear_probing(slot, item)
-        if self._collision_method == 'quadratic_probing':
-            self._quadratic_probing(slot, item)
-        if self._collision_method == 'separate_chaining':
-            self._separate_chaining(slot, item)
 
-        #extra: resize table if 75% full on both axes
-        self._check_resize()
+        if (not isinstance(item, list)):
+            #get index by using mod
+            slot = item % self._length
+            
+            #checks for collision handling type requested
+            if self._collision_method == 'linear_probing':
+                self._linear_probing(slot, item)
+            if self._collision_method == 'quadratic_probing':
+                self._quadratic_probing(slot, item)
+            if self._collision_method == 'separate_chaining':
+                self._separate_chaining(slot, item)
+
+            #extra: resize table if 75% full on both axes
+            if (self._do_resize):
+                self._check_resize()
+        else:
+            for val in item:
+                #get index by using mod
+                slot = val % self._length
+                
+                #checks for collision handling type requested
+                if self._collision_method == 'linear_probing':
+                    self._linear_probing(slot, val)
+                if self._collision_method == 'quadratic_probing':
+                    self._quadratic_probing(slot, val)
+                if self._collision_method == 'separate_chaining':
+                    self._separate_chaining(slot, val)
+
+                #extra: resize table if 75% full on both axes
+                if (self._do_resize):
+                    self._check_resize()
+
+
     
     #Linear Probing
     # _ used to indicate private method*
@@ -118,65 +140,36 @@ if __name__ == "__main__":
 
     #LINEAR PROBING
     #insert some values into the table
-    # print("Linear Probing")
-    # MyTable = table(collision_method='linear_probing')
-    # MyTable.insert(12)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(22)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(15)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(25)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(16)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(18)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(23)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(33)
-    # print(MyTable)
+    '''
+    print("Linear Probing")
+    MyTable = table(collision_method='linear_probing', auto_resize=False)
+
+    MyTable.insert([12,22,15,25,16,18,23,33])
+    print(MyTable)
+    '''
+    
+    
 
     #QUADRATIC PROBING
     #insert some values into the table
+    
     print("\nQuadratic Probing")
-    MyTable = table(collision_method='quadratic_probing')
-    MyTable.insert(12)
-    print(str(MyTable) + "\n")
-    MyTable.insert(22)
-    print(str(MyTable) + "\n")
-    MyTable.insert(15)
-    print(str(MyTable) + "\n")
-    MyTable.insert(25)
-    print(str(MyTable) + "\n")
-    MyTable.insert(16)
-    print(str(MyTable) + "\n")
-    MyTable.insert(18)
-    print(str(MyTable) + "\n")
-    MyTable.insert(23)
-    print(str(MyTable) + "\n")
-    MyTable.insert(33)
+    MyTable = table(collision_method='quadratic_probing', auto_resize=False)
+
+    MyTable.insert([12,22,15,25,16,18,23,33])
     print(MyTable)
+    
+    
+    
 
     #SEPARATE CHAINING 
     #insert some values into the table
-    # print("\nSeparate Chaining")
-    # MyTable = table(collision_method='separate_chaining')
-    # MyTable.insert(12)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(22)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(15)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(25)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(16)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(18)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(23)
-    # print(str(MyTable) + "\n")
-    # MyTable.insert(33)
-    # print(MyTable)
+    '''
+    print("\nSeparate Chaining")
+    MyTable = table(collision_method='separate_chaining', auto_resize=False)
 
-
+    MyTable.insert([12,22,15,25,16,18,23,33])
+    print(MyTable)
+    '''
+    
+    
