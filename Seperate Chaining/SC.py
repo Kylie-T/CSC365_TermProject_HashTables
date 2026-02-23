@@ -60,17 +60,18 @@ class table:
         org_slot = slot
         i = 0
         #checks if the index has a value assigned, if so, quadratic probing occurs
-        while (self._table[slot][0] != ' '):
-            slot = (org_slot + i**2) % self._length
+        while True:
+            if (self._table[slot][0] == ' '):
+                self._table[slot][0] = item
+                return
             i+=1
+            slot = (org_slot + i**2) % self._length
 
             #resizes the table once all indices are checked
-            if (i > self._length):
+            if (i >= self._length):
                 self._resize()
-                break
-        
-        #loop provides viable index to set value
-        self._table[slot][0] = item
+                self.insert(item)
+                return
 
     #Separate Chaining
     # _ used to indicate private method*
@@ -107,11 +108,29 @@ class table:
     #handles resizing (doubles previous size)
     # _ used to indicate private method*
     def _resize(self):
-        new_size = self._length * 2
-        for i in range(self._length, new_size):
-            self._table.append([' '])
+
+        #copies old table
+        old_table = self._table.copy()
+        self._length *= 2
+
+        #resets table instead of keeping old values, needs to be rehashed
+        self._table = [[' '] for i in range(self._length)]
+
+        #linear and quadratic probing cases
+        if self._collision_method == 'linear_probing' or self._collision_method == 'quadratic_probing':
+            #re-inserts each value to the new, resized table; rehashing
+            for row in old_table:
+                if row[0] != ' ':
+                    self.insert(row[0])
+
+        #separate chaining case
+        elif (self._collision_method == 'separate_chaining'):
+            #re-inserts each value in each linked list
+            for bucket in old_table:
+                for item in bucket:
+                    self.insert(item)
+            
        
-        self._length = new_size
     
     #returns a easy to read string representation of the hash table
     def __str__(self):
@@ -140,14 +159,11 @@ if __name__ == "__main__":
 
     #LINEAR PROBING
     #insert some values into the table
-    '''
     print("Linear Probing")
     MyTable = table(collision_method='linear_probing', auto_resize=False)
 
     MyTable.insert([12,22,15,25,16,18,23,33])
     print(MyTable)
-    '''
-    
     
 
     #QUADRATIC PROBING
@@ -160,16 +176,13 @@ if __name__ == "__main__":
     print(MyTable)
     
     
-    
 
     #SEPARATE CHAINING 
     #insert some values into the table
-    '''
     print("\nSeparate Chaining")
     MyTable = table(collision_method='separate_chaining', auto_resize=False)
 
     MyTable.insert([12,22,15,25,16,18,23,33])
     print(MyTable)
-    '''
     
     
