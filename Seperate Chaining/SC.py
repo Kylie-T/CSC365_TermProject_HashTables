@@ -87,9 +87,12 @@ class table:
         org_slot = slot
         i = 0
         #checks if the index has a value assigned, if so, quadratic probing occurs
-        while (self._table[slot][0] != ' '):
-            slot = (org_slot + i**2) % self._length
+        while True:
+            if (self._table[slot][0] == ' '):
+                self._table[slot][0] = item
+                return
             i+=1
+            slot = (org_slot + i**2) % self._length
 
             #resizes the table once all indices are checked
             self._check_resize()
