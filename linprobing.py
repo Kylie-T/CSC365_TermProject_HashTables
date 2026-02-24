@@ -4,16 +4,14 @@ from Utils.table import table
 
 class linearTable(table):
     def _collision_method(self, slot, item):
-        new_node = node(item)
-        i = 0
+        start = slot
+        # keeps going until the current bucket is empty
+        while (self._table[slot].ptr is not None):
+            slot = (slot + 1) % self._length
+        
+        # inserts new node
+        self._table[slot].ptr = node(item)
 
-        #checks if the index has a value assigned, if so, quadratic probing occurs
-        while True:
-            if (self._table[slot].ptr == None):
-                self._table[slot].ptr = new_node
-                break
-            i += 1
-            slot = (slot + i) % self._length
 
 
 
