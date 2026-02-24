@@ -1,36 +1,11 @@
+from abc import ABC, abstractmethod
+from Utils.node import node
 
-class node:
-    def __init__(self, value, ptr=None):
-        self._value = value
-        self._ptr=ptr
-
-    @property
-    def ptr(self):
-        return self._ptr
-
-    @ptr.setter
-    def ptr(self, nd):
-        self._ptr = nd
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, val):
-        self._value = val
-
-    def __str__(self):
-        return f"[{self._value} | {self._ptr}]"
-
-    def __repr__(self):
-        return f"[{self._value} | {self._ptr}]"
-
-class table:
-    def __init__(self, initial_length = 5):
+class table(ABC):
+    def __init__(self, initial_length = 7):
         self._table = []
         
-        #fill table with initial_length amount of empty spaces (space used to represent None)
+        #fill table with initial_length amount of empty nodes
         for i in range(initial_length):
             self._table.append(node(f'b{i}'))
         
@@ -40,11 +15,14 @@ class table:
 
     def insert(self, item):
 
+        #used for inserting evey value in a list or not
         if not isinstance(item, list):
+
+            #check if size is > load factor then resize
             self._check_resize()
 
             slot = item % self._length
-            self._linear_probing(slot, item)
+            self._collision_method(slot, item)
             self._count += 1
 
         else:
@@ -53,22 +31,14 @@ class table:
                 self._check_resize()
 
                 slot = val % self._length
-                self._linear_probing(slot, val)
+                self._collision_method(slot, val)
                 self._count += 1
-    
-    def _linear_probing(self, slot, item):
-        new_node = node(item)
-        i = 0
 
-        #checks if the index has a value assigned, if so, quadratic probing occurs
-        while True:
-            if (self._table[slot].ptr == None):
-                self._table[slot].ptr = new_node
-                break
-            i += 1
-            slot = (slot + i) % self._length
-     
-
+    @abstractmethod
+    def _collision_method(self, slot, item):
+        '''Must be implemented by child class'''
+        print("child method not implemented")
+        exit(-1)
 
     #check if a resize is needed based on a threshold (75% by default)
     # _ used to indicate private method*
@@ -108,9 +78,5 @@ class table:
 
 
         return "\n" + string + "\n"
+    
 
-myTable = table()
-values = [12, 22, 15, 25, 16, 18, 23, 33]
-myTable.insert(values)
-print(f'inserting values: {values}')
-print(myTable)
